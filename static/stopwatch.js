@@ -56,3 +56,21 @@ function addTime(){
 	timeChanger(addM=true)
 
 }
+
+// Test Block
+function enable_eye(){
+
+	eyeButton=document.getElementById("eyeButton")
+	pressed=(eyeButton.getAttribute("aria-pressed") === "true");
+
+	if (!pressed){
+		
+		eyeButton.className = "btn btn-outline-warning"; 
+	}
+	else{
+
+		eyeButton.className = "btn btn-outline-secondary"; 
+	};
+	eyeButton.setAttribute("aria-pressed", !pressed);
+};
+// End of Test Block

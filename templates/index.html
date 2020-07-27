@@ -2,7 +2,7 @@
 <html>
 	<head>
 		 <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" >
-		<title>Main</title>
+		<title>Test</title>
 	</head>
 	<body class="bg bg-dark">
 		<div class="container-fluid mx-auto border" style="width:500px;">
@@ -20,10 +20,20 @@
 				<button type="button" class="btn btn-secondary btn-sm" id="addbtn">+1</button>
 			</div>
 		</div>
-
+		<!-- Test Block -->
+<!-- 		<div class="btn-group-toggle mx-auto" style="width:500px"; data-toggle="buttons">
+  			<label class="btn btn-secondary active">
+   			 <input type="checkbox" id="eyeButton" onclick="enable_eye()"  checked> Checked
+  			</label>
+		</div> -->
+		<button type="button" class="btn  btn-outline-secondary" aria-pressed="false" id="eyeButton" onclick="enable_eye()" >
+  Single toggle
+</button>
+		<!-- End of Test Block -->
 	 	<script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='popper.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='stopwatch.js') }}"></script>
+
 	</body>
 </html>
