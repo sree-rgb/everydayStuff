@@ -56,6 +56,12 @@ function addTime(){
 	timeChanger(addM=true)
 
 }
+function playAlert(){
+	var audioElement = document.getElementById('eyealert')
+	audioElement.play();
+
+  // The duration variable now holds the duration (in seconds) of the audio clip 
+}
 
 // Test Block
 function enable_eye(){
@@ -65,7 +71,8 @@ function enable_eye(){
 
 	if (!pressed){
 		
-		eyeButton.className = "btn btn-outline-warning"; 
+		eyeButton.className = "btn btn-warning"; 
+		playAlert()
 	}
 	else{
 

@@ -27,8 +27,11 @@
   			</label>
 		</div> -->
 		<button type="button" class="btn  btn-outline-secondary" aria-pressed="false" id="eyeButton" onclick="enable_eye()" >
-  Single toggle
+  Eye
 </button>
+<audio id="eyealert">
+   <source src="{{ url_for('static', filename='sms-alert-3-daniel_simon.wav') }}">
+</audio>
 		<!-- End of Test Block -->
 	 	<script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='popper.min.js') }}" ></script>
