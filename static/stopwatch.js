@@ -16,10 +16,12 @@ function startStop(){
       clearInterval(intervalID);
       startbtn.onclick= function() {startStop()};
       startbtn.innerHTML='Start'
+      startbtn.setAttribute("data-state", 'stop')
       startbtn.className="btn btn-light"
     }
     
 	var intervalID = window.setInterval(timeChanger,1000);
+	startbtn.setAttribute("data-state", 'run')
 	startbtn=document.getElementById('startbtn')
 	startbtn.innerHTML='Stop'
 	startbtn.className="btn btn-outline-light"
@@ -62,16 +64,39 @@ function playAlert(){
 
   // The duration variable now holds the duration (in seconds) of the audio clip 
 }
+function enableCheck(){
+	minutes=parseInt(document.getElementById('minutes').textContent)
+	startbtn=document.getElementById('startbtn')
+	timer_state=(startbtn.getAttribute("data-state")==='run')
+	if (timer_state && minutes != 0 && minutes % 3 == 0){
+		playAlert()
+
+		return false
+	}
+	return true
+	}
+function eyeButtonAudioLoop(){
+	var intervalID = window.setInterval(enableCheck, 1000);
+	eyeButton=document.getElementById("eyeButton")
+	eyeButton.onclick=function() {stopTimer(intervalID);
+	enable_eye();
+	};
+
+
+
+
+}
 
 // Test Block
 function enable_eye(){
-
+	eyeButton.onclick=enable_eye
 	eyeButton=document.getElementById("eyeButton")
 	pressed=(eyeButton.getAttribute("aria-pressed") === "true");
 
 	if (!pressed){
 		
 		eyeButton.className = "btn btn-warning"; 
+		eyeButtonAudioLoop()
 		playAlert()
 	}
 	else{
