@@ -58,6 +58,8 @@ function addTime(){
 	timeChanger(addM=true)
 
 }
+// Test Block
+
 function playAlert(){
 	var audioElement = document.getElementById('eyealert')
 	audioElement.play();
@@ -76,9 +78,10 @@ function enableCheck(){
 	return true
 	}
 function eyeButtonAudioLoop(){
-	var intervalID = window.setInterval(enableCheck, 1000);
+	// Call enableCheck every 1 minute
+	var intervalID = window.setInterval(enableCheck, 60000);
 	eyeButton=document.getElementById("eyeButton")
-	eyeButton.onclick=function() {stopTimer(intervalID);
+	eyeButton.onclick=function() {clearInterval(intervalID);
 	enable_eye();
 	};
 
@@ -87,21 +90,20 @@ function eyeButtonAudioLoop(){
 
 }
 
-// Test Block
 function enable_eye(){
-	eyeButton.onclick=enable_eye
 	eyeButton=document.getElementById("eyeButton")
+	eyeButton.onclick=enable_eye
 	pressed=(eyeButton.getAttribute("aria-pressed") === "true");
 
 	if (!pressed){
 		
-		eyeButton.className = "btn btn-warning"; 
+		eyeButton.className = "btn btn-warning rounded-circle border border-light"; 
 		eyeButtonAudioLoop()
 		playAlert()
 	}
 	else{
 
-		eyeButton.className = "btn btn-outline-secondary"; 
+		eyeButton.className = "btn btn-outline-secondary rounded-circle border border-dark"; 
 	};
 	eyeButton.setAttribute("aria-pressed", !pressed);
 };

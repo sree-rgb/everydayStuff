@@ -5,7 +5,19 @@
 		<title>Test</title>
 	</head>
 	<body class="bg bg-dark">
+		<ul class="list-group list-group-horizontal-sm  text-white mx-auto" style="width:500px;">
+  			<li class="list-group-item bg-secondary border border-dark">
+  				<button type="button" class="btn  btn-outline-secondary rounded-circle border border-dark" aria-pressed="false" id="eyeButton" onclick="enable_eye()">
+					&#128065;
+				</button>
+				<audio id="eyealert">
+   					<source src="{{ url_for('static', filename='sms-alert-3-daniel_simon.wav') }}">
+				</audio>
+			</li>
+
+		</ul>
 		<div class="container-fluid mx-auto border" style="width:500px;">
+
 			<div class="text-white display-1 mx-auto" style="width:190px;"><div class="text-white display-4">Day</div> {{date1}}</div>
 		</div>
 
@@ -20,20 +32,10 @@
 				<button type="button" class="btn btn-secondary btn-sm" id="addbtn">+1</button>
 			</div>
 		</div>
-		<!-- Test Block -->
-<!-- 		<div class="btn-group-toggle mx-auto" style="width:500px"; data-toggle="buttons">
-  			<label class="btn btn-secondary active">
-   			 <input type="checkbox" id="eyeButton" onclick="enable_eye()"  checked> Checked
-  			</label>
-		</div> -->
-		<button type="button" class="btn  btn-outline-secondary" aria-pressed="false" id="eyeButton" onclick="enable_eye()">
-  Eye
-</button>
-<audio id="eyealert">
-   <source src="{{ url_for('static', filename='sms-alert-3-daniel_simon.wav') }}">
-</audio>
+
+		
 		<!-- End of Test Block -->
-	 	<script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}" ></script>
+		<script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='popper.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='stopwatch.js') }}"></script>
