@@ -8,6 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 // Make timer a class object and construct everything with this class on page load
 // Test Block
+class CustomButton{
+	default_base_class='btn'
+	constructor(btn_text='No Text',btn_class='btn-light'){
+		this.btn = document.createElement("button");
+		this.btn.className=`${this.default_base_class} ${btn_class}`
+		this.btn.textContent=btn_text
+	}
+	getObject(){
+		return this.btn
+	}
+}
 class Timer{
 	instance_number = 1;
 	idGenerate(base){
@@ -16,21 +27,23 @@ class Timer{
   		return (`${base}${this.base_number.toString()}`)
   	}
   	
-  	makeTimer(){
+  	makeTimer(start_number='00'){
   		// function makeTimeElement(){
   		// 	console.log('yes')
   		// }
   		
-  		const makeTimeElement = (base) => {
+  		const makeTimeElement = (base,start_number) => {
   			var timeElement = document.createElement("span");
   			timeElement.id =this.idGenerate(base)
-  			timeElement.textContent='00'
+  			timeElement.textContent=start_number
+
   			return timeElement
     	}
   		this.timer = document.createElement("h1");
 		this.timer.id = this.idGenerate('timer')
 		this.timer.className="text-white display-1 mx-auto"
-		this.timer.append(makeTimeElement('hours'),':',makeTimeElement('minutes'),':',makeTimeElement('seconds'))
+		this.timer.append(makeTimeElement('hours',start_number),':',makeTimeElement('minutes',start_number),':',makeTimeElement('seconds',start_number))
+		console.log('newversrion')
 		return this.timer
   	}
 	constructor(parentS,height, width) {
@@ -39,16 +52,35 @@ class Timer{
   		this.parentS=parentS
     	this.height = height;
     	this.width = width;
-		this.outerBox = document.createElement("div"); 
-		this.outerBox.className="container-fluid mx-auto"
-		this.outerBox.setAttribute("style", `width:${height};height:${height}`);
-
-	document.querySelector('body').append(this.outerBox)
+		// this.outerBox = document.createElement("div"); 
+		// this.outerBox.className="container-fluid mx-auto"
+		// this.outerBox.setAttribute("style", `width:${height};height:${height}`);
   	}
-
-
-
 }
+class StopWatch extends Timer {
+	makeButtonBox(width='200px',ob_class='mx-auto'){
+		const makeButton = (btn_text=undefined,btn_class=undefined)=>{
+			var temp_button=new CustomButton(btn_text,btn_class)
+			return temp_button.getObject()
+		}
+		this.strtbtn=makeButton('Start')
+		this.strtbtn.id=this.idGenerate('startbtn')
+		this.strtbtn.setAttribute("data-state","stop");
+		this.rstbtn=makeButton('Reset')
+		this.rstbtn.id=this.idGenerate('resetbtn')
+		this.increment1btn=makeButton('+1','btn-secondary btn-sm')
+		this.increment1btn.id=this.idGenerate('addbtn')
+		this.increment1btn.type="button"
+		this.button_box = document.createElement("div");
+		this.button_box.className =ob_class
+		this.button_box.setAttribute("style",`width:${width};`)
+		this.button_box.append(this.strtbtn,'\t',this.rstbtn,'\t',this.increment1btn)
+
+		// TestCode
+		document.body.append(this.button_box)
+		// End of test code
+	}
+	}
 // End of Test Block
 function resetTime(){
 	document.getElementById('timer').innerHTML='<span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>'
