@@ -8,15 +8,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 // Make timer a class object and construct everything with this class on page load
 // Test Block
-class CustomButton{
-	default_base_class='btn'
-	constructor(btn_text='No Text',btn_class='btn-light'){
-		this.btn = document.createElement("button");
-		this.btn.className=`${this.default_base_class} ${btn_class}`
-		this.btn.textContent=btn_text
+class CustomObject{
+
+	constructor(element_type='div',ele_class=''){
+		this.the_object = document.createElement("button");
+		this.the_object.className=`${ele_class}`
+
+	}
+	setObjectAttribute(attributes){
+		// sets the button attributes with an object.
+
 	}
 	getObject(){
-		return this.btn
+		return this.the_object
+	}
+}
+class CustomButton extends CustomObject {
+	default_base_class='btn'
+	constructor(btn_text='No Text',btn_class='btn-light'){
+
+		super('button',`btn ${btn_class}`)
+		// console.log('yippie')
+		// this.the_object = document.createElement("button");
+
+		// this.the_object.className=`${this.default_base_class} ${btn_class}`
+		this.the_object.textContent=btn_text
 	}
 }
 class Timer{
@@ -28,9 +44,6 @@ class Timer{
   	}
   	
   	makeTimer(start_number='00'){
-  		// function makeTimeElement(){
-  		// 	console.log('yes')
-  		// }
   		
   		const makeTimeElement = (base,start_number) => {
   			var timeElement = document.createElement("span");
@@ -63,6 +76,7 @@ class StopWatch extends Timer {
 			var temp_button=new CustomButton(btn_text,btn_class)
 			return temp_button.getObject()
 		}
+		// this.strtbtn=CustomButton('Start')
 		this.strtbtn=makeButton('Start')
 		this.strtbtn.id=this.idGenerate('startbtn')
 		this.strtbtn.setAttribute("data-state","stop");
