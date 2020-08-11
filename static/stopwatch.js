@@ -11,12 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
 class CustomObject{
 
 	constructor(element_type='div',ele_class=''){
-		this.the_object = document.createElement("button");
+		this.the_object = document.createElement(element_type);
 		this.the_object.className=`${ele_class}`
 
 	}
-	setObjectAttribute(attributes){
+	setAttribute(attributes){
 		// sets the button attributes with an object.
+		for (const [key, value] of Object.entries(attributes)) {
+			this.the_object.setAttribute(key,value)
+		}
 
 	}
 	getObject(){
@@ -35,6 +38,17 @@ class CustomButton extends CustomObject {
 		this.the_object.textContent=btn_text
 	}
 }
+class CustomContainer extends CustomObject{
+	constructor(container_type="div",container_class=''){
+		super(container_type,container_class)
+
+	}
+	append(...args){
+		this.the_object.append(...args)
+
+	}
+}
+
 class Timer{
 	instance_number = 1;
 	idGenerate(base){
@@ -71,27 +85,34 @@ class Timer{
   	}
 }
 class StopWatch extends Timer {
-	makeButtonBox(width='200px',ob_class='mx-auto'){
+	makeButtonBox(width='200px'){
 		const makeButton = (btn_text=undefined,btn_class=undefined)=>{
 			var temp_button=new CustomButton(btn_text,btn_class)
 			return temp_button.getObject()
 		}
-		// this.strtbtn=CustomButton('Start')
-		this.strtbtn=makeButton('Start')
-		this.strtbtn.id=this.idGenerate('startbtn')
-		this.strtbtn.setAttribute("data-state","stop");
-		this.rstbtn=makeButton('Reset')
-		this.rstbtn.id=this.idGenerate('resetbtn')
-		this.increment1btn=makeButton('+1','btn-secondary btn-sm')
-		this.increment1btn.id=this.idGenerate('addbtn')
-		this.increment1btn.type="button"
-		this.button_box = document.createElement("div");
-		this.button_box.className =ob_class
-		this.button_box.setAttribute("style",`width:${width};`)
-		this.button_box.append(this.strtbtn,'\t',this.rstbtn,'\t',this.increment1btn)
+		this.strtbtn=new CustomButton('Start')
+		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
+		// this.strtbtn=makeButton('Start')
+		// this.strtbtn.id=this.idGenerate('startbtn')
+		// this.strtbtn.setAttribute("data-state","stop");
+		this.rstbtn=new CustomButton('Reset')
+		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
+		// this.rstbtn=makeButton('Reset')
+		// this.rstbtn.id=this.idGenerate('resetbtn')
+		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
+		this.increment1btn.setAttribute({'id':this.idGenerate('addbtn'),'type':"button"})
+		// this.increment1btn=makeButton('+1','btn-secondary btn-sm')
+		// this.increment1btn.id=this.idGenerate('addbtn')
+		// this.increment1btn.type="button"
+		this.button_box = new CustomContainer("div",'mx-auto');
+		this.button_box.setAttribute({"style":`width:${width};`})
+		// this.button_box = document.createElement("div");
+		// this.button_box.className ='mx-auto'
+		// this.button_box.setAttribute("style",`width:${width};`)
+		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
 
 		// TestCode
-		document.body.append(this.button_box)
+		document.body.append(this.button_box.getObject())
 		// End of test code
 	}
 	}
