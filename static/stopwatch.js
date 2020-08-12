@@ -47,6 +47,9 @@ class CustomContainer extends CustomObject{
 		this.the_object.append(...args)
 
 	}
+	getChild(childNum){
+		return this.the_object.getChild(childNum)
+	}
 }
 
 class Timer{
@@ -86,31 +89,32 @@ class Timer{
 }
 class StopWatch extends Timer {
 	makeButtonBox(width='200px'){
-		const makeButton = (btn_text=undefined,btn_class=undefined)=>{
-			var temp_button=new CustomButton(btn_text,btn_class)
-			return temp_button.getObject()
-		}
+
 		this.strtbtn=new CustomButton('Start')
 		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
-		// this.strtbtn=makeButton('Start')
-		// this.strtbtn.id=this.idGenerate('startbtn')
-		// this.strtbtn.setAttribute("data-state","stop");
 		this.rstbtn=new CustomButton('Reset')
 		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
-		// this.rstbtn=makeButton('Reset')
-		// this.rstbtn.id=this.idGenerate('resetbtn')
 		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
 		this.increment1btn.setAttribute({'id':this.idGenerate('addbtn'),'type':"button"})
-		// this.increment1btn=makeButton('+1','btn-secondary btn-sm')
-		// this.increment1btn.id=this.idGenerate('addbtn')
-		// this.increment1btn.type="button"
+
 		this.button_box = new CustomContainer("div",'mx-auto');
 		this.button_box.setAttribute({"style":`width:${width};`})
-		// this.button_box = document.createElement("div");
-		// this.button_box.className ='mx-auto'
-		// this.button_box.setAttribute("style",`width:${width};`)
-		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
 
+		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
+		
+		this.strtbtn.state_change=(new_state)=>{
+			// toggles the class and data-state variable for 'start' and 'stop' states.
+			if (new_state=='start'){
+				this.strtbtn.setAttribute({'class':'btn btn-outline-light','data-state':"start"})
+			}
+			else{
+				this.strtbtn.setAttribute({'class':'btn btn-light','data-state':"stop"})
+			}
+		}
+		// this.button_box.state_change_strt=()=>{const tempstrt=this.button_box.the_object.firstChild
+			// Uses First Child to locate startbtn needs a fix
+				// tempstrt.className="btn btn-warning"
+			// }
 		// TestCode
 		document.body.append(this.button_box.getObject())
 		// End of test code
