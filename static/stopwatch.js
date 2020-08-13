@@ -12,7 +12,9 @@ class CustomObject{
 
 	constructor(element_type='div',ele_class=''){
 		this.the_object = document.createElement(element_type);
-		this.the_object.className=`${ele_class}`
+		if (ele_class != ''){
+			this.the_object.className=`${ele_class}`
+		}
 
 	}
 	setAttribute(attributes){
@@ -24,6 +26,12 @@ class CustomObject{
 	}
 	getObject(){
 		return this.the_object
+	}
+	getTextContent(){
+		return this.the_object.text_content
+	}
+	setTextContent(text_content){
+		this.the_object.textContent=text_content
 	}
 }
 class CustomButton extends CustomObject {
@@ -51,6 +59,15 @@ class CustomContainer extends CustomObject{
 		return this.the_object.getChild(childNum)
 	}
 }
+class CustomText extends CustomObject{
+	constructor(text_type="p",text_class='',text_content=''){
+		super(text_type,text_class)
+		this.setTextContent(text_content)
+
+	}
+
+
+}
 
 class Timer{
 	instance_number = 1;
@@ -69,12 +86,14 @@ class Timer{
 
   			return timeElement
     	}
-  		this.timer = document.createElement("h1");
-		this.timer.id = this.idGenerate('timer')
-		this.timer.className="text-white display-1 mx-auto"
-		this.timer.append(makeTimeElement('hours',start_number),':',makeTimeElement('minutes',start_number),':',makeTimeElement('seconds',start_number))
-		console.log('newversrion')
-		return this.timer
+    	this.timer = new CustomContainer('h1','text-white display-1 mx-auto')
+    	this.timer.setAttribute({'id':this.idGenerate('timer')})
+    	this.second = new CustomText('span','',start_number)
+    	this.second.setAttribute({'id':this.idGenerate('seconds')})
+  		// this.timer = document.createElement("h1");
+		// this.timer.id = this.idGenerate('timer')
+		// this.timer.className="text-white display-1 mx-auto"
+		this.timer.append(makeTimeElement('hours',start_number),':',makeTimeElement('minutes',start_number),':',this.second.getObject())
   	}
 	constructor(parentS,height, width) {
 		this.base_number=this.instance_number
@@ -92,16 +111,6 @@ class StopWatch extends Timer {
 
 		this.strtbtn=new CustomButton('Start')
 		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
-		this.rstbtn=new CustomButton('Reset')
-		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
-		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
-		this.increment1btn.setAttribute({'id':this.idGenerate('addbtn'),'type':"button"})
-
-		this.button_box = new CustomContainer("div",'mx-auto');
-		this.button_box.setAttribute({"style":`width:${width};`})
-
-		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
-		
 		this.strtbtn.state_change=(new_state)=>{
 			// toggles the class and data-state variable for 'start' and 'stop' states.
 			if (new_state=='start'){
@@ -111,14 +120,27 @@ class StopWatch extends Timer {
 				this.strtbtn.setAttribute({'class':'btn btn-light','data-state':"stop"})
 			}
 		}
-		// this.button_box.state_change_strt=()=>{const tempstrt=this.button_box.the_object.firstChild
-			// Uses First Child to locate startbtn needs a fix
-				// tempstrt.className="btn btn-warning"
-			// }
+
+		this.rstbtn=new CustomButton('Reset')
+		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
+		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
+		this.increment1btn.setAttribute({'id':this.idGenerate('addbtn'),'type':"button"})
+
+		this.button_box = new CustomContainer("div",'mx-auto');
+		this.button_box.setAttribute({"style":`width:${width};`})
+		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
+		
+		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
+		this.outer_box.setAttribute({'style':`width:${this.width}`})
+		this.makeTimer()
+		this.outer_box.append(this.timer.getObject(),this.button_box.getObject())
+
+
 		// TestCode
-		document.body.append(this.button_box.getObject())
+		document.body.append(this.outer_box.getObject())
 		// End of test code
 	}
+
 	}
 // End of Test Block
 function resetTime(){
