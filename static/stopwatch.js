@@ -28,10 +28,11 @@ class CustomObject{
 		return this.the_object
 	}
 	getTextContent(){
-		return this.the_object.text_content
+		return this.the_object.textContent
 	}
 	setTextContent(text_content){
 		this.the_object.textContent=text_content
+		return true
 	}
 }
 class CustomButton extends CustomObject {
@@ -44,6 +45,9 @@ class CustomButton extends CustomObject {
 
 		// this.the_object.className=`${this.default_base_class} ${btn_class}`
 		this.the_object.textContent=btn_text
+	}
+	defineClick(onclick_function){
+		this.the_object.onclick=onclick_function
 	}
 }
 class CustomContainer extends CustomObject{
@@ -68,6 +72,36 @@ class CustomText extends CustomObject{
 
 
 }
+class TimeElementObject extends CustomText{
+	constructor(ele_name,def_value,text_type="h1",text_class=''){
+		super(text_type,text_class,def_value)
+		this.ele_name=ele_name
+		this.setAttribute({'id':ele_name})
+		this.def_value=def_value
+		this.current_value=def_value
+	}
+
+	setLeftElement(ele){
+		// The Time value that is on the left side of this value
+		// For example for seconds this is minutes, for minutes hours and so on
+		this.left_ele=ele
+
+	}
+	getLeftElement(){
+		// The Time value that is on the left side of this value
+		// For example for seconds this is minutes, for minutes hours and so on
+		return this.left_ele
+	}
+	getCurrentValue(){
+		return this.current_value
+	}
+	resetToDefaultValue(){
+		this.setTextContent(this.def_value)
+		this.current_value=this.def_value
+	}
+
+
+}
 
 class Timer{
 	instance_number = 1;
@@ -88,12 +122,14 @@ class Timer{
     	}
     	this.timer = new CustomContainer('h1','text-white display-1 mx-auto')
     	this.timer.setAttribute({'id':this.idGenerate('timer')})
-    	this.second = new CustomText('span','',start_number)
-    	this.second.setAttribute({'id':this.idGenerate('seconds')})
+    	this.second = new TimeElementObject(this.idGenerate('seconds'),'00','span','',start_number)
+    	this.minute = new TimeElementObject(this.idGenerate('minutes'),'00','span','',start_number)
+    	this.hour 	= new TimeElementObject(this.idGenerate('hours'),'00','span','',start_number)
+    	this.second.resetToDefaultValue()
   		// this.timer = document.createElement("h1");
 		// this.timer.id = this.idGenerate('timer')
 		// this.timer.className="text-white display-1 mx-auto"
-		this.timer.append(makeTimeElement('hours',start_number),':',makeTimeElement('minutes',start_number),':',this.second.getObject())
+		this.timer.append(this.hour.getObject(),':',this.minute.getObject(),':',this.second.getObject())
   	}
 	constructor(parentS,height, width) {
 		this.base_number=this.instance_number
@@ -105,8 +141,35 @@ class Timer{
 		// this.outerBox.className="container-fluid mx-auto"
 		// this.outerBox.setAttribute("style", `width:${height};height:${height}`);
   	}
+  	
+  	timeChanger(addM=false){
+
+
+  		const t_sec=this.idGenerate('seconds')
+  		const t_min=this.idGenerate('minutes')
+  		const t_hours=this.idGenerate('hours')
+  		const t_centiseconds=this.idGenerate('centiseconds')
+		var chn = {[t_sec]:t_min,[t_min]:t_hours,[t_centiseconds]:t_sec}
+  		// var chn = {this.idGenerate('seconds'):this.idGenerate('minutes'),this.idGenerate('minutes'):this.idGenerate('hours'),this.idGenerate('centiseconds'):this.idGenerate('seconds')}
+  		this.changer=(change)=>{
+
+  			sec=parseInt(document.getElementById(change).innerHTML)+1
+  			if (sec == 60){
+				this.changer(chn[change])
+				var sec=0
+			};
+			document.getElementById(change).innerHTML=pad(sec,2)
+  		};
+  		if (addM==true){
+			this.changer(this.idGenerate('minutes'))
+		}
+		else {
+				this.changer(this.idGenerate('seconds'))
+		};
+  	};
 }
 class StopWatch extends Timer {
+
 	makeButtonBox(width='200px'){
 
 		this.strtbtn=new CustomButton('Start')
@@ -114,13 +177,13 @@ class StopWatch extends Timer {
 		this.strtbtn.state_change=(new_state)=>{
 			// toggles the class and data-state variable for 'start' and 'stop' states.
 			if (new_state=='start'){
-				this.strtbtn.setAttribute({'class':'btn btn-outline-light','data-state':"start"})
+				this.strtbtn.setAttribute({'class':'btn btn-outline-light','data-state':"run"})
 			}
 			else{
 				this.strtbtn.setAttribute({'class':'btn btn-light','data-state':"stop"})
 			}
 		}
-
+		
 		this.rstbtn=new CustomButton('Reset')
 		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
 		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
@@ -138,8 +201,20 @@ class StopWatch extends Timer {
 
 		// TestCode
 		document.body.append(this.outer_box.getObject())
+		this.strtbtn.defineClick(this.define_startStop())
 		// End of test code
 	}
+	define_startStop(){
+		return ()=>{
+
+			var intervalID = window.setInterval(()=>{
+				this.timeChanger();}
+				,1000);
+		}
+
+
+	}
+
 
 	}
 // End of Test Block
@@ -158,8 +233,8 @@ function startStop(){
     }
     
 	var intervalID = window.setInterval(timeChanger,1000);
-	startbtn.setAttribute("data-state", 'run')
 	startbtn=document.getElementById('startbtn')
+	startbtn.setAttribute("data-state", 'run')
 	startbtn.innerHTML='Stop'
 	startbtn.className="btn btn-outline-light"
 	startbtn.onclick=function() {stopTimer(intervalID)};
