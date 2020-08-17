@@ -102,15 +102,32 @@ class TimeElementObject extends CustomText{
 
 
 }
+//Important variable .Somehow assigining it inside class doesnt work. Accessed from timer constructor
+Timer_instance_number=1
+class AlertSound extends CustomObject{
+	constructor(audio_src){
+		super('audio')
+		this.source_file=document.createElement('source')
+		this.source_file.setAttribute('src',`${audio_src}`)
+		this.the_object.append(this.source_file)
+	}
 
+}
 class Timer{
-	instance_number = 1;
 	idGenerate(base){
 	// Used to Make unique ids for Elements made.
 	// Takes a base string as input and returns the base string with instance number as output
   		return (`${base}${this.base_number.toString()}`)
   	}
-  	
+
+  	makeEyeTracker(){
+		this.eye_button=new CustomButton('Blink','btn-outline-secondary rounded-circle border border-secondary')
+		this.eye_button.the_object.innerHTML='&#128065;'
+		this.eye_button.setAttribute({'id':this.idGenerate('eyeButton'),'type':'button','aria-pressed':'false'})
+		this.alert_eye=new AlertSound("static/sms-alert-3-daniel_simon.wav")
+		this.top_bar=new CustomContainer('li','list-group-item bg-dark')
+		this.top_bar.append(this.eye_button.getObject(),this.alert_eye.getObject())
+	}
   	makeTimer(start_number='00'){
   		
   		const makeTimeElement = (base,start_number) => {
@@ -132,8 +149,10 @@ class Timer{
 		this.timer.append(this.hour.getObject(),':',this.minute.getObject(),':',this.second.getObject())
   	}
 	constructor(parentS,height, width) {
-		this.base_number=this.instance_number
-		this.instance_number+=1
+		// Timer_instance_number accessed from outside
+		this.base_number=self.Timer_instance_number
+		self.Timer_instance_number=self.Timer_instance_number+1
+
   		this.parentS=parentS
     	this.height = height;
     	this.width = width;
@@ -141,9 +160,15 @@ class Timer{
 		// this.outerBox.className="container-fluid mx-auto"
 		// this.outerBox.setAttribute("style", `width:${height};height:${height}`);
   	}
+  	resetTimer(){
+  		this.second.resetToDefaultValue();
+  		this.minute.resetToDefaultValue();
+  		this.hour.resetToDefaultValue();
+
+  	}
   	
   	timeChanger(addM=false){
-
+  		// Could be improved by using getLeftElement method
 
   		const t_sec=this.idGenerate('seconds')
   		const t_min=this.idGenerate('minutes')
@@ -169,6 +194,7 @@ class Timer{
   	};
 }
 class StopWatch extends Timer {
+
 
 	makeButtonBox(width='200px'){
 
@@ -198,12 +224,19 @@ class StopWatch extends Timer {
 		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
 		this.outer_box.setAttribute({'style':`width:${this.width}`})
 		this.makeTimer()
+		// TestCode
+		this.makeEyeTracker()
+		this.outer_box.append(this.top_bar.getObject())
+		// End of test code
 		this.outer_box.append(this.timer.getObject(),this.button_box.getObject())
 
-
+		this.strtbtn.defineClick(this.define_startStop())
+		this.rstbtn.defineClick(this.define_reset())
+		this.increment1btn.defineClick(this.addM())
 		// TestCode
 		document.body.append(this.outer_box.getObject())
-		this.strtbtn.defineClick(this.define_startStop())
+		
+
 		// End of test code
 	}
 	define_startStop(){
@@ -223,9 +256,21 @@ class StopWatch extends Timer {
 
 
 	}
-
+	define_reset(){
+		return ()=>{
+			this.resetTimer()
+		}
 
 	}
+	addM(){
+		// add minutes with time changer
+		return ()=>{
+			this.timeChanger(true)
+		}
+	}
+}
+
+
 // End of Test Block
 function resetTime(){
 	document.getElementById('timer').innerHTML='<span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>'
@@ -276,7 +321,7 @@ function pad(n, width, z) {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 function addTime(){
-	timeChanger(addM=true)
+	timeChanger(true)
 
 }
 
