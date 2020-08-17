@@ -176,11 +176,13 @@ class StopWatch extends Timer {
 		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
 		this.strtbtn.state_change=(new_state)=>{
 			// toggles the class and data-state variable for 'start' and 'stop' states.
-			if (new_state=='start'){
+			if (new_state=='run'){
 				this.strtbtn.setAttribute({'class':'btn btn-outline-light','data-state':"run"})
+				this.strtbtn.setTextContent('Stop')
 			}
 			else{
 				this.strtbtn.setAttribute({'class':'btn btn-light','data-state':"stop"})
+				this.strtbtn.setTextContent('Start')
 			}
 		}
 		
@@ -210,6 +212,13 @@ class StopWatch extends Timer {
 			var intervalID = window.setInterval(()=>{
 				this.timeChanger();}
 				,1000);
+			this.strtbtn.state_change('run')
+			this.strtbtn.defineClick(()=>{
+				clearInterval(intervalID)
+				this.strtbtn.state_change('stop')
+				this.strtbtn.defineClick(this.define_startStop())
+
+			})
 		}
 
 
