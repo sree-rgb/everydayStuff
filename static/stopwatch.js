@@ -111,6 +111,9 @@ class AlertSound extends CustomObject{
 		this.source_file.setAttribute('src',`${audio_src}`)
 		this.the_object.append(this.source_file)
 	}
+	playAlert(){
+		this.the_object.play()
+	}
 
 }
 class Timer{
@@ -124,9 +127,21 @@ class Timer{
 		this.eye_button=new CustomButton('Blink','btn-outline-secondary rounded-circle border border-secondary')
 		this.eye_button.the_object.innerHTML='&#128065;'
 		this.eye_button.setAttribute({'id':this.idGenerate('eyeButton'),'type':'button','aria-pressed':'false'})
+		this.eye_button.state_change=(state)=>{
+			this.eye_button.setAttribute({'class':(state=='on')? 'btn-secondary rounded-circle border border-secondary':'btn-outline-secondary rounded-circle border border-secondary'})
+		}
 		this.alert_eye=new AlertSound("static/sms-alert-3-daniel_simon.wav")
+		this.alert_eye.setAttribute({'id':this.idGenerate('eyealert')})
 		this.top_bar=new CustomContainer('li','list-group-item bg-dark')
+		this.eye_button.defineClick(this.define_eyeclick())
 		this.top_bar.append(this.eye_button.getObject(),this.alert_eye.getObject())
+	}
+	define_eyeclick(){
+		//needs to defined in stopwatch instead
+		return ()=>{
+			this.alert_eye.playAlert()
+			this.eye_button.state_change('on')
+		}
 	}
   	makeTimer(start_number='00'){
   		
