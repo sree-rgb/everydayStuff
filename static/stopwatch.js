@@ -6,56 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	addbtn.onclick= function() {addTime()};
 	
 	});
-// Make timer a class object and construct everything with this class on page load
-// Test Block
-class Timer{
-	instance_number = 1;
-	idGenerate(base){
-	// Used to Make unique ids for Elements made.
-	// Takes a base string as input and returns the base string with instance number as output
-  		return (`${base}${this.base_number.toString()}`)
-  	}
-  	
-  	makeTimer(){
-  		// function makeTimeElement(){
-  		// 	console.log('yes')
-  		// }
-  		
-  		const makeTimeElement = (base) => {
-  			var timeElement = document.createElement("span");
-  			timeElement.id =this.idGenerate(base)
-  			timeElement.textContent='00'
-  			return timeElement
-    	}
-  		this.timer = document.createElement("h1");
-		this.timer.id = this.idGenerate('timer')
-		this.timer.className="text-white display-1 mx-auto"
-		this.timer.append(makeTimeElement('hours'),':',makeTimeElement('minutes'),':',makeTimeElement('seconds'))
-		return this.timer
-  	}
-	constructor(parentS,height, width) {
-		this.base_number=this.instance_number
-		this.instance_number+=1
-  		this.parentS=parentS
-    	this.height = height;
-    	this.width = width;
-		this.outerBox = document.createElement("div"); 
-		this.outerBox.className="container-fluid mx-auto"
-		this.outerBox.setAttribute("style", `width:${height};height:${height}`);
 
-	document.querySelector('body').append(this.outerBox)
-  	}
-
-
-
-}
-// End of Test Block
 function resetTime(){
+	// resets time
 	document.getElementById('timer').innerHTML='<span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>'
 
 }
 
 function startStop(){
+	//Timer worker
 	function stopTimer(intervalID) {
       clearInterval(intervalID);
       startbtn.onclick= function() {startStop()};
@@ -151,4 +110,3 @@ function enable_eye(){
 	};
 	eyeButton.setAttribute("aria-pressed", !pressed);
 };
-// End of Test Block
