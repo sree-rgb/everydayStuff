@@ -4,8 +4,13 @@
 		 <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" >
 		<title>Test</title>
 	</head>
-	<body class="bg bg-dark">
-		<ul class="list-group list-group-horizontal-sm  text-white mx-auto" style="width:500px;">
+	<body class="bg bg-dark" id="Home">
+
+		<div class="container-fluid mx-auto border"  style="width:500px;">
+
+			<div class="text-white display-1 mx-auto" style="width:190px;"><div class="text-white display-4">Day</div> {{date1}}</div>
+		</div>
+		<ul class="list-group list-group-horizontal-sm  text-white mx-auto" style="width:500px;" id="raw_eye">
   			<li class="list-group-item bg-secondary border border-dark">
   				<button type="button" class="btn  btn-outline-secondary rounded-circle border border-dark" aria-pressed="false" id="eyeButton" onclick="enable_eye()">
 					&#128065;
@@ -16,13 +21,10 @@
 			</li>
 
 		</ul>
-		<div class="container-fluid mx-auto border" style="width:500px;">
-
-			<div class="text-white display-1 mx-auto" style="width:190px;"><div class="text-white display-4">Day</div> {{date1}}</div>
-		</div>
 
 
-		<div class="container-fluid mx-auto" style="width:500px;">
+
+		<div class="container-fluid mx-auto" id="raw_timer" style="width:500px;">
 			<h1 id="timer" class="text-white display-1 mx-auto">
 				<!-- h1 should be aligned center -->
 				<span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
@@ -35,7 +37,7 @@
 		</div>
 
 		
-		<!-- End of Test Block -->
+
 		<script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='popper.min.js') }}" ></script>
 		<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
