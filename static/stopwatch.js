@@ -135,19 +135,34 @@ class Timer{
 	// Takes a base string as input and returns the base string with instance number as output
   		return (`${base}${this.base_number.toString()}`)
   	}
+  	makeTopBar(){
+  		this.top_bar=new CustomContainer('ul','list-group list-group-horizontal-sm  text-white mx-auto')
+
+  	}
+  	getTopBarButton(){
+  		var thebutton=new CustomButton('','btn-outline-secondary rounded-circle border border-secondary')
+  		thebutton.state_change=(state)=>{
+			thebutton.setAttribute({'class':(state=='on')? 'btn btn-secondary rounded-circle border border-secondary':' btn btn-outline-secondary rounded-circle border border-secondary'})
+		}
+
+		return thebutton
+  	}
+  	getTopBarListItem(){
+  		return new CustomContainer('li','list-group-item bg-dark')
+
+  	}
 
   	makeEyeTracker(){
-		this.eye_button=new CustomButton('Blink','btn-outline-secondary rounded-circle border border-secondary')
+		this.eye_button=this.getTopBarButton()
 		this.eye_button.the_object.innerHTML='&#128065;'
 		this.eye_button.setAttribute({'id':this.idGenerate('eyeButton'),'type':'button','aria-pressed':'false'})
-		this.eye_button.state_change=(state)=>{
-			this.eye_button.setAttribute({'class':(state=='on')? 'btn btn-secondary rounded-circle border border-secondary':' btn btn-outline-secondary rounded-circle border border-secondary'})
-		}
 		this.alert_eye=new AlertSound("static/sms-alert-3-daniel_simon.wav")
 		this.alert_eye.setAttribute({'id':this.idGenerate('eyealert')})
-		this.top_bar=new CustomContainer('li','list-group-item bg-dark')
 		this.eye_button.defineClick(this.define_eyeclick())
-		this.top_bar.append(this.eye_button.getObject(),this.alert_eye.getObject())
+		this.eye_list=this.getTopBarListItem()
+		this.eye_list.append(this.eye_button.getObject(),this.alert_eye.getObject())
+		this.top_bar.append(this.eye_list.getObject())
+		// this.top_bar.append(this.eye_button.getObject(),this.alert_eye.getObject())
 	}
 	define_eyeclick(){
 		//needs to defined in stopwatch instead
@@ -162,6 +177,7 @@ class Timer{
 			this.eye_button.state_change('on')
 			var intervalID = window.setInterval(alert_func, 60000);
 			this.alert_eye.playAlert()
+			console.log('alert played')
 			this.eye_button.defineClick(()=>{
 				clearInterval(intervalID);
 				this.eye_button.defineClick(this.define_eyeclick())
@@ -242,7 +258,39 @@ class StopWatch extends Timer {
   		parent=document.querySelector(this.parentS)
   		parent.append(this.outer_box.getObject())
   	}
+  	make50timeout(){
+  		this.timeout50=this.getTopBarButton()
+  		this.timeout50.setTextContent('50')
+  		this.timeout50.setAttribute({'id':this.idGenerate('timeout50Button'),'type':'button','aria-pressed':'false'})
+  		this.alert_timeout50=new AlertSound("static/Store_Door_Chime-Mike_Koenig3.wav")
+		this.alert_timeout50.setAttribute({'id':this.idGenerate('timeout50alert')})
+		this.timeout50.defineClick(this.define_50timeoutclick())
+		this.timeout50list=this.getTopBarListItem()
+		this.timeout50list.append(this.timeout50.getObject(),this.alert_timeout50.getObject())
+		this.top_bar.append(this.timeout50list.getObject())
+  	}
+  	define_50timeoutclick(){
+  		// this and alerteye could be replaced with one single function
+  		
+  		return ()=>{
+  		var alert_func2 = ()=>{
+			var temp_min=parseInt(this.minute.getTextContent())
+			if (temp_min == 50 && this.is_running()){
+			this.alert_timeout50.playAlert()
+			}
+		}
+		this.timeout50.state_change('on')
+			var intervalID = window.setInterval(alert_func2, 30000);
+			this.alert_timeout50.playAlert()
+			this.timeout50.defineClick(()=>{
+				clearInterval(intervalID);
+				this.timeout50.defineClick(this.define_50timeoutclick())
+				this.timeout50.state_change('off')
+			})
+		}
 
+
+  	}
 
 	makeButtonBox(width='200px'){
 
@@ -272,9 +320,11 @@ class StopWatch extends Timer {
 		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
 		this.outer_box.setAttribute({'style':`width:500px;`})
 		this.makeTimer()
-		// Makes eye tracker from super class and appends the top bar from it.
+		// Makes,makes eye tracker from super class,timeout50 from this class and appends top bar to outerbox.
 		//This portion could be later modified to add it only to main page
+		this.makeTopBar()
 		this.makeEyeTracker()
+		this.make50timeout()
 		this.outer_box.append(this.top_bar.getObject())
 		// End of making eye tracker.
 
