@@ -152,16 +152,11 @@ class Timer{
   	}
 
   	makeEyeTracker(){
-		// this.eye_button=new CustomButton('Blink','btn-outline-secondary rounded-circle border border-secondary')
 		this.eye_button=this.getTopBarButton()
 		this.eye_button.the_object.innerHTML='&#128065;'
 		this.eye_button.setAttribute({'id':this.idGenerate('eyeButton'),'type':'button','aria-pressed':'false'})
-		// this.eye_button.state_change=(state)=>{
-			// this.eye_button.setAttribute({'class':(state=='on')? 'btn btn-secondary rounded-circle border border-secondary':' btn btn-outline-secondary rounded-circle border border-secondary'})
-		// }
 		this.alert_eye=new AlertSound("static/sms-alert-3-daniel_simon.wav")
 		this.alert_eye.setAttribute({'id':this.idGenerate('eyealert')})
-		// this.top_bar=new CustomContainer('li','list-group-item bg-dark')
 		this.eye_button.defineClick(this.define_eyeclick())
 		this.eye_list=this.getTopBarListItem()
 		this.eye_list.append(this.eye_button.getObject(),this.alert_eye.getObject())
@@ -175,7 +170,6 @@ class Timer{
 				var temp_min=parseInt(this.minute.getTextContent())
 				if (temp_min != 0 && (temp_min%3)==0 && this.is_running()){
 				this.alert_eye.playAlert()
-				console.log('alert played')
 			}
 				
 			}
@@ -275,6 +269,7 @@ class StopWatch extends Timer {
 		this.top_bar.append(this.timeout50list.getObject())
   	}
   	define_50timeoutclick(){
+  		// this and alerteye could be replaced with one single function
   		
   		return ()=>{
   		var alert_func2 = ()=>{
@@ -324,7 +319,7 @@ class StopWatch extends Timer {
 		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
 		this.outer_box.setAttribute({'style':`width:500px;`})
 		this.makeTimer()
-		// Makes eye tracker from super class and appends the top bar from it.
+		// Makes,makes eye tracker from super class,timeout50 from this class and appends top bar to outerbox.
 		//This portion could be later modified to add it only to main page
 		this.makeTopBar()
 		this.makeEyeTracker()
