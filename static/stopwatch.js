@@ -337,10 +337,6 @@ class StopWatch extends Timer {
 		//End of defining button actions
 
 
-		
-		// TestCode
-		// document.body.append(this.outer_box.getObject())
-		// End of test code
 	}
 	define_startStop(){
 		return ()=>{
