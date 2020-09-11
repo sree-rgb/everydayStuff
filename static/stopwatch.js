@@ -48,6 +48,10 @@ class CustomObject{
 		this.the_object.textContent=text_content
 		return true
 	}
+	addClass(class_name){
+		var current_class=this.the_object.className
+		this.the_object.className=`${current_class} ${class_name}`
+	}
 }
 class CustomButton extends CustomObject {
 	default_base_class='btn'
@@ -291,10 +295,11 @@ class StopWatch extends Timer {
 
   	}
 
-	makeButtonBox(width='200px'){
+	makeButtonBox(width='17rem;'){
 
 		this.strtbtn=new CustomButton('Start')
 		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
+		this.strtbtn.addClass('spaceButtons')
 		this.strtbtn.state_change=(new_state)=>{
 			// toggles the class and data-state variable for 'start' and 'stop' states.
 			if (new_state=='run'){
@@ -309,6 +314,7 @@ class StopWatch extends Timer {
 		
 		this.rstbtn=new CustomButton('Reset')
 		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
+		this.rstbtn.addClass('spaceButtons')
 		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
 		this.increment1btn.setAttribute({'id':this.idGenerate('addbtn'),'type':"button"})
 
@@ -317,6 +323,7 @@ class StopWatch extends Timer {
 		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
 		
 		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
+		// this.outer_box.setAttribute({'style':`width:500px;`})
 		this.outer_box.setAttribute({'style':`width:500px;`})
 		this.makeTimer()
 		// Makes,makes eye tracker from super class,timeout50 from this class and appends top bar to outerbox.
