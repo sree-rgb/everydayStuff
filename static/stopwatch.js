@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Make timer a class object and construct everything with this class on page load
 
-// Validate Block
+// Objects Block
 class CustomObject{
 
 	constructor(element_type='div',ele_class=''){
@@ -48,6 +48,10 @@ class CustomObject{
 	setTextContent(text_content){
 		this.the_object.textContent=text_content
 		return true
+	}
+	addClass(class_name){
+		var current_class=this.the_object.className
+		this.the_object.className=`${current_class} ${class_name}`
 	}
 }
 class CustomButton extends CustomObject {
@@ -177,7 +181,6 @@ class Timer{
 			this.eye_button.state_change('on')
 			var intervalID = window.setInterval(alert_func, 60000);
 			this.alert_eye.playAlert()
-			console.log('alert played')
 			this.eye_button.defineClick(()=>{
 				clearInterval(intervalID);
 				this.eye_button.defineClick(this.define_eyeclick())
@@ -292,10 +295,11 @@ class StopWatch extends Timer {
 
   	}
 
-	makeButtonBox(width='200px'){
+	makeButtonBox(width='17em;'){
 
 		this.strtbtn=new CustomButton('Start')
 		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
+		this.strtbtn.addClass('spaceButtons')
 		this.strtbtn.state_change=(new_state)=>{
 			// toggles the class and data-state variable for 'start' and 'stop' states.
 			if (new_state=='run'){
@@ -310,6 +314,7 @@ class StopWatch extends Timer {
 		
 		this.rstbtn=new CustomButton('Reset')
 		this.rstbtn.setAttribute({'id':this.idGenerate('resetbtn')})
+		this.rstbtn.addClass('spaceButtons')
 		this.increment1btn=new CustomButton('+1','btn-secondary btn-sm')
 		this.increment1btn.setAttribute({'id':this.idGenerate('addbtn'),'type':"button"})
 
@@ -318,7 +323,8 @@ class StopWatch extends Timer {
 		this.button_box.append(this.strtbtn.getObject(),'\t',this.rstbtn.getObject(),'\t',this.increment1btn.getObject())
 		
 		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
-		this.outer_box.setAttribute({'style':`width:500px;`})
+		// this.outer_box.setAttribute({'style':`width:500px;`})
+		this.outer_box.setAttribute({'style':`width:25.7em;`})
 		this.makeTimer()
 		// Makes,makes eye tracker from super class,timeout50 from this class and appends top bar to outerbox.
 		//This portion could be later modified to add it only to main page
@@ -338,10 +344,6 @@ class StopWatch extends Timer {
 		//End of defining button actions
 
 
-		
-		// TestCode
-		// document.body.append(this.outer_box.getObject())
-		// End of test code
 	}
 	define_startStop(){
 		return ()=>{
@@ -377,116 +379,3 @@ class StopWatch extends Timer {
 		}
 	}
 }
-
-
-
-// End of Validate Block
-
-
-//Previous Code- No longer used
-// function resetTime(){
-// 	document.getElementById('timer').innerHTML='<span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>'
-
-// }
-
-// function startStop(){
-// 	function stopTimer(intervalID) {
-//       clearInterval(intervalID);
-//       startbtn.onclick= function() {startStop()};
-//       startbtn.innerHTML='Start'
-//       startbtn.setAttribute("data-state", 'stop')
-//       startbtn.className="btn btn-light"
-//     }
-
-    
-// 	var intervalID = window.setInterval(timeChanger,1000);
-// 	startbtn=document.getElementById('startbtn')
-// 	startbtn.setAttribute("data-state", 'run')
-// 	startbtn.innerHTML='Stop'
-// 	startbtn.className="btn btn-outline-light"
-// 	startbtn.onclick=function() {stopTimer(intervalID)};
-
-// };
-// function pad(n, width, z) {
-//   z = z || '0';
-//   n = n + '';
-//   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-// }
-// function timeChanger(addM=false){
-
-// 	var chn = {'seconds':'minutes','minutes':'hours','centiseconds':'seconds'}
-// 	function changer(change){
-
-// 		sec=parseInt(document.getElementById(change).innerHTML)+1
-// 		if (sec == 60){
-// 			changer(chn[change])
-// 			sec=0
-// 		};
-// 	document.getElementById(change).innerHTML=pad(sec,2)
-// 	};
-// 	if (addM==true){
-// 		changer('minutes')
-// 	}
-// 	else {
-// 	changer('seconds')
-// 		};
-
-	
-// };
-
-// function addTime(){
-// 	timeChanger(true)
-
-// }
-
-
-// function playAlert(){
-// 	var audioElement = document.getElementById('eyealert')
-// 	audioElement.play();
-
-//   // The duration variable now holds the duration (in seconds) of the audio clip 
-// }
-// function enableCheck(){
-// 	minutes=parseInt(document.getElementById('minutes').textContent)
-// 	startbtn=document.getElementById('startbtn')
-// 	timer_state=(startbtn.getAttribute("data-state")==='run')
-// 	if (timer_state && minutes != 0 && minutes % 3 == 0){
-// 		playAlert()
-
-// 		return false
-// 	}
-// 	return true
-// 	}
-// function eyeButtonAudioLoop(){
-// 	// Call enableCheck every 1 minute
-// 	var intervalID = window.setInterval(enableCheck, 60000);
-// 	eyeButton=document.getElementById("eyeButton")
-// 	eyeButton.onclick=function() {clearInterval(intervalID);
-// 	enable_eye();
-// 	};
-
-
-
-
-// }
-
-// function enable_eye(){
-// 	eyeButton=document.getElementById("eyeButton")
-// 	eyeButton.onclick=enable_eye
-// 	pressed=(eyeButton.getAttribute("aria-pressed") === "true");
-
-// 	if (!pressed){
-		
-// 		eyeButton.className = "btn btn-warning rounded-circle border border-light"; 
-// 		eyeButtonAudioLoop()
-// 		playAlert()
-// 	}
-// 	else{
-
-
-// 		eyeButton.className = "btn btn-outline-secondary rounded-circle border border-dark"; 
-// 	};
-// 	eyeButton.setAttribute("aria-pressed", !pressed);
-// };
-// End of Previous Code
-

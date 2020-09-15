@@ -2,11 +2,12 @@
 <html>
 	<head>
 		 <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" >
+		 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}?v=5" >
 		<title>Test</title>
 	</head>
 	<body class="bg bg-dark" id="Home">
 
-		<div class="container-fluid mx-auto border"  style="width:500px;">
+		<div class="container-fluid mx-auto border-bottom border-secondary text-center"  style="width:500px;">
 
 			<div class="text-white display-1 mx-auto" style="width:190px;"><div class="text-white display-4">Day</div> {{date1}}</div>
 		</div>
