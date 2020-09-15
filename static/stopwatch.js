@@ -180,7 +180,6 @@ class Timer{
 			this.eye_button.state_change('on')
 			var intervalID = window.setInterval(alert_func, 60000);
 			this.alert_eye.playAlert()
-			console.log('alert played')
 			this.eye_button.defineClick(()=>{
 				clearInterval(intervalID);
 				this.eye_button.defineClick(this.define_eyeclick())
@@ -295,7 +294,7 @@ class StopWatch extends Timer {
 
   	}
 
-	makeButtonBox(width='17rem;'){
+	makeButtonBox(width='17em;'){
 
 		this.strtbtn=new CustomButton('Start')
 		this.strtbtn.setAttribute({'id':this.idGenerate('startbtn'),'data-state':"stop"})
@@ -324,7 +323,7 @@ class StopWatch extends Timer {
 		
 		this.outer_box=new CustomContainer("div",'container-fluid mx-auto');
 		// this.outer_box.setAttribute({'style':`width:500px;`})
-		this.outer_box.setAttribute({'style':`width:500px;`})
+		this.outer_box.setAttribute({'style':`width:25.7em;`})
 		this.makeTimer()
 		// Makes,makes eye tracker from super class,timeout50 from this class and appends top bar to outerbox.
 		//This portion could be later modified to add it only to main page
