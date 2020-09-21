@@ -159,7 +159,7 @@ class Timer{
 		this.eye_button=this.getTopBarButton()
 		this.eye_button.the_object.innerHTML='&#128065;'
 		this.eye_button.setAttribute({'id':this.idGenerate('eyeButton'),'type':'button','aria-pressed':'false'})
-		this.alert_eye=new AlertSound("static/sms-alert-3-daniel_simon.wav")
+		this.alert_eye=new AlertSound("uploads/alert1.wav")
 		this.alert_eye.setAttribute({'id':this.idGenerate('eyealert')})
 		this.eye_button.defineClick(this.define_eyeclick())
 		this.eye_list=this.getTopBarListItem()
