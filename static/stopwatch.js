@@ -302,11 +302,11 @@ class StopWatch extends Timer {
 		this.strtbtn.state_change=(new_state)=>{
 			// toggles the class and data-state variable for 'start' and 'stop' states.
 			if (new_state=='run'){
-				this.strtbtn.setAttribute({'class':'btn btn-outline-light','data-state':"run"})
+				this.strtbtn.setAttribute({'class':'btn btn-outline-light spaceButtons','data-state':"run"})
 				this.strtbtn.setTextContent('Stop')
 			}
 			else{
-				this.strtbtn.setAttribute({'class':'btn btn-light','data-state':"stop"})
+				this.strtbtn.setAttribute({'class':'btn btn-light spaceButtons','data-state':"stop"})
 				this.strtbtn.setTextContent('Start')
 			}
 		}
