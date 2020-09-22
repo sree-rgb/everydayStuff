@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	Home_timer=new StopWatch('#Home','500px;','200px;')
 	Home_timer.addToParent()
-	Home_timer.displayEyeAlertsrc()
+	//Change of source of Audio File Not Working
+	//Date: 22 sep2020
+	// Home_timer.displayEyeAlertsrc()
+	//End ofChange of source of Audio File
+	
 	});
 // Make timer a class object and construct everything with this class on page load
 
@@ -126,6 +130,8 @@ class AlertSound extends CustomObject{
 		this.source_file=document.createElement('source')
 		this.source_file.setAttribute('src',`${audio_src}`)
 		this.the_object.append(this.source_file)
+		this.the_object.setAttribute('preload','none')
+
 	}
 	playAlert(){
 		this.the_object.play()
