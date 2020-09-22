@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	Home_timer=new StopWatch('#Home','500px;','200px;')
 	Home_timer.addToParent()
-	
+	Home_timer.displayEyeAlertsrc()
 	});
 // Make timer a class object and construct everything with this class on page load
 
@@ -130,8 +130,14 @@ class AlertSound extends CustomObject{
 	playAlert(){
 		this.the_object.play()
 	}
-
+	getSource(){
+		return this.source_file.src
+	}
+	changeSource(audio_src){
+		this.source_file.setAttribute('src',`${audio_src}`)
+	}
 }
+
 class Timer{
 	idGenerate(base){
 	// Used to Make unique ids for Elements made.
@@ -376,7 +382,32 @@ class StopWatch extends Timer {
 			this.timeChanger(true)
 		}
 	}
+	//Temp way to change eye alert file name
+	displayEyeAlertsrc(){
+		var filename=''
+		filename=this.alert_eye.getSource()
+		filename=filename.split('/')
+		filename=filename[filename.length-1]
+		document.getElementById('eyeAlertSrcInput').value=filename
+		document.getElementById('eyeSave').onclick=()=>{
+			var temp_filename = document.getElementById('eyeAlertSrcInput').value
+			temp_filename='uploads/'+temp_filename
+			this.changeEyeAlertsrc(temp_filename)
+		}
+	}
+	changeEyeAlertsrc(src){
+		this.alert_eye.changeSource(src)
+
+	}
+	//End of eye alert filename
 }
 
+class theModal{
+	//Not yet Implemented
+	constructor(){
+
+	}
+
+}
 
 // End of Objects Block
