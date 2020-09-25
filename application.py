@@ -2,6 +2,10 @@ import os
 import requests
 from flask import Flask, jsonify, render_template, request, session, redirect,url_for,send_file,send_from_directory
 import datetime
+import sounds
+default_alert_filename='alerts.pkl'
+# sounds.restoreDefaultAlerts(default_alert_filename)
+alerts=sounds.Alerts.loadPickle(default_alert_filename)
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -12,14 +16,21 @@ else:raise ValueError('No Upload Folder Defined')
 basedate=datetime.date(day=30,month=6,year=2020)
 @app.route("/")
 def index():
-    return render_template("index.html",date1=(datetime.date.today()-basedate).days)
+    return render_template("index.html",date1=(datetime.date.today()-basedate).days,eye_alert=alerts.getCurrentAlertFile(),eye_alert_id=alerts.getSelecetedAlert())
 
 @app.route('/uploads/<path:filename>')
 def download_file(filename):
 	filemap={'alert1.wav':'sms-alert-31-daniel_simon.wav','alert2.wav':'sms-alert-32-daniel_simon.wav','alert3.wav':'sms-alert-33-daniel_simon.wav'}
 	# return '<h1>%s</h1>' % filemap.get(filename)
 	return send_from_directory(UPLOAD_FOLDER,filemap.get(filename), as_attachment=True)
-    
+@app.route('/selectalert/<path:fileid>')
+def alert_set(fileid):
+	try:
+		alerts.selectAlert(int(fileid))
+		alerts.savePickle()
+		return jsonify({'status':'success'})
+	except AssertionError:
+		return jsonify({'status':'fail'})
 # @app.route('/alert/<path:filename>')
 # def download_file(filename):
 #     return send_from_directory('/static', filename)

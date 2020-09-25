@@ -14,10 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	Home_timer=new StopWatch('#Home','500px;','200px;')
 	Home_timer.addToParent()
-	//Change of source of Audio File Not Working
-	//Date: 22 sep2020
-	// Home_timer.displayEyeAlertsrc()
-	//End ofChange of source of Audio File
+	markCurrentAlert()
 	
 	});
 // Make timer a class object and construct everything with this class on page load
@@ -171,7 +168,7 @@ class Timer{
 		this.eye_button=this.getTopBarButton()
 		this.eye_button.the_object.innerHTML='&#128065;'
 		this.eye_button.setAttribute({'id':this.idGenerate('eyeButton'),'type':'button','aria-pressed':'false'})
-		this.alert_eye=new AlertSound("uploads/alert1.wav")
+		this.alert_eye=new AlertSound("uploads/"+default_eye_alert)
 		this.alert_eye.setAttribute({'id':this.idGenerate('eyealert')})
 		this.eye_button.defineClick(this.define_eyeclick())
 		this.eye_list=this.getTopBarListItem()
@@ -388,32 +385,55 @@ class StopWatch extends Timer {
 			this.timeChanger(true)
 		}
 	}
-	//Temp way to change eye alert file name
-	displayEyeAlertsrc(){
-		var filename=''
-		filename=this.alert_eye.getSource()
-		filename=filename.split('/')
-		filename=filename[filename.length-1]
-		document.getElementById('eyeAlertSrcInput').value=filename
-		document.getElementById('eyeSave').onclick=()=>{
-			var temp_filename = document.getElementById('eyeAlertSrcInput').value
-			temp_filename='uploads/'+temp_filename
-			this.changeEyeAlertsrc(temp_filename)
-		}
-	}
-	changeEyeAlertsrc(src){
-		this.alert_eye.changeSource(src)
+}
+function changeDefaultAlert(){
+			server_send_request=(fid)=>{
+				const web_path = ('/selectalert/'+fid).replace(/ /g,'')
+				const request = new XMLHttpRequest();
+				request.open('GET',web_path);
+				request.onload = () =>{	
+					const data =  JSON.parse(request.responseText)
+			
+					if (data.status == 'success'){
+						document.querySelector("#closealert").click()
+						modal1=document.querySelector("#temp_modal_body")
+						
+						alert_container=new CustomContainer('div','alert alert-success')
+						alert_container.setTextContent('Changes Saved.Reload Page to see the changes.')
+						modal1.append(alert_container.getObject())
 
-	}
-	//End of eye alert filename
+					} 
+
+
+				}; //End of request.onload
+				request.send();
+			}; 
+
+			modal1=document.querySelector('#temp_modal_body')
+			inputs=modal1.querySelectorAll('input')
+			inputs.forEach((x)=>{
+				if (x.checked==true){
+					server_send_request(x.value)
+					// server_send_request(x.value)
+				};
+			});
+
 }
 
-class theModal{
-	//Not yet Implemented
-	constructor(){
+function markCurrentAlert(){
+	currentAlert=default_eye_alert_id
+	modal1=document.querySelector('#temp_modal_body')
+	inputs=modal1.querySelectorAll('input')
+	checking=(input1)=>{
+		if (input1.value==currentAlert){
+			input1.checked=true
 
+		}
 	}
 
+	inputs.forEach(checking)
+	Save_button=document.querySelector('#eyeSave')
+	Save_button.onclick=()=>{changeDefaultAlert()}
 }
 
 // End of Objects Block
