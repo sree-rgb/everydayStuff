@@ -101,12 +101,15 @@ class TimeElementObject extends CustomText{
 	setLeftElement(ele){
 		// The Time value that is on the left side of this value
 		// For example for seconds this is minutes, for minutes hours and so on
+
+		// Not used so far
 		this.left_ele=ele
 
 	}
 	getLeftElement(){
 		// The Time value that is on the left side of this value
 		// For example for seconds this is minutes, for minutes hours and so on
+		// Not used so far
 		return this.left_ele
 	}
 	getCurrentValue(){
